@@ -83,7 +83,7 @@ $("#delete").on("click",function(){
 function renderHTML(){
    var str="<ul>";
    for(var i=0;i<data.length;i++){
-   str += "<li>"+data[i].title+"<button onClick='delete("+data[i].isbn+")'>-</button></li>"
+   str += "<li>"+data[i].title+"<button onClick='deleteRow("+data[i].isbn+")'>-</button></li>"
    }
    str+="</li>"
    $("#listItems").html(str);
