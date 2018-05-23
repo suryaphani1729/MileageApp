@@ -1,0 +1,114 @@
+<html>
+<head>
+ <title>indexedDb</title>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" ></script>
+ </head>
+ <body>
+
+<input type="text" id="key" />
+<input type="button" value="save" id="save" />
+<input type="button" value="delete" id="delete" />
+
+<div id="listItems">
+</div>
+
+
+
+
+
+<script>
+
+var request = indexedDB.open("library");
+
+request.onupgradeneeded = function() {
+  // The database did not previously exist, so create object stores and indexes.
+  var db = request.result;
+  var store = db.createObjectStore("itemlist", {keyPath: "isbn"});
+  var titleIndex = store.createIndex("by_title", "title", {unique: true});
+
+  // Populate with initial data.
+  store.put({title: "Quarry Memories",isbn:1});
+  store.put({title: "Water Buffaloes",isbn:2});
+  store.put({title: "Bedrock Nights",isbn:3});
+};
+
+var db;
+request.onsuccess = function() {
+   db = request.result;
+   getData();
+}
+function getData(){
+ 
+
+var tx = db.transaction("itemlist", "readonly");
+var store = tx.objectStore("itemlist");
+var index = store.index("by_title");
+
+
+var request = index.getAll();
+request.onsuccess = function() {
+  var matching = request.result;
+  if (matching !== undefined) {
+    // A match was found.
+   data = matching;
+   renderHTML();
+  } else {
+    // No match was found.
+    console.log(null);
+  }
+};
+
+}
+
+function deleteRow(){
+  
+  
+var tx = db.transaction("itemlist", "readwrite");
+var store = tx.objectStore("itemlist");
+
+
+var request = store.delete(2);
+request.onsuccess = function(ev) {
+console.log(ev);
+ renderHTML();
+};
+  
+
+}
+$("#delete").on("click",function(){
+
+deleteRow();
+
+});
+function renderHTML(){
+   var str="<ul>";
+   for(var i=0;i<data.length;i++){
+   str += "<li>"+data[i].title+"</li>"
+   }
+   str+="</li>"
+   $("#listItems").html(str);
+}
+
+var btn = document.getElementById("save");
+var data;
+$("#save").on("click",function(){
+ var db = request.result;
+var tx = db.transaction("itemlist", "readwrite");
+var store = tx.objectStore("itemlist");
+
+store.put({title: $("#key").val(), isbn: data.length+1});
+
+
+tx.oncomplete = function() {
+    console.log(db);
+    getData();
+    $("#key").val("");
+};
+
+});
+
+
+
+</script>
+</body>
+</html>
