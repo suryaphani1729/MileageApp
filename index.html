@@ -70,7 +70,7 @@ var store = tx.objectStore("itemlist");
 var request = store.delete(id);
 request.onsuccess = function(ev) {
 console.log(ev);
- renderHTML();
+ getData();
 };
   
 
