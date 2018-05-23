@@ -60,14 +60,14 @@ request.onsuccess = function() {
 
 }
 
-function deleteRow(){
+function deleteRow(id){
   
   
 var tx = db.transaction("itemlist", "readwrite");
 var store = tx.objectStore("itemlist");
 
 
-var request = store.delete(2);
+var request = store.delete(id);
 request.onsuccess = function(ev) {
 console.log(ev);
  renderHTML();
@@ -77,13 +77,13 @@ console.log(ev);
 }
 $("#delete").on("click",function(){
 
-deleteRow();
+//deleteRow();
 
 });
 function renderHTML(){
    var str="<ul>";
    for(var i=0;i<data.length;i++){
-   str += "<li>"+data[i].title+"</li>"
+   str += "<li>"+data[i].title+"<button onClick='delete("+data[i].isbn+")'>-</button></li>"
    }
    str+="</li>"
    $("#listItems").html(str);
