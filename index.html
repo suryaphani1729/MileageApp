@@ -62,7 +62,7 @@ request.onsuccess = function() {
 
 function deleteRow(id){
   
-  
+  console.log(id);
 var tx = db.transaction("itemlist", "readwrite");
 var store = tx.objectStore("itemlist");
 
