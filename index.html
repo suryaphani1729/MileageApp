@@ -63,7 +63,7 @@ request.onsuccess = function() {
 function getData(){
  
 
-var tx = db.transaction("itemlist", "readonly");
+var tx = db.transaction("itemlist", "readwrite");
 var store = tx.objectStore("itemlist");
 var index = store.index("by_title");
 
