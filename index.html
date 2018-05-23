@@ -80,9 +80,14 @@ $("#delete").on("click",function(){
 //deleteRow();
 
 });
+ var newId = 0;
 function renderHTML(){
+ 
    var str="<ul>";
    for(var i=0;i<data.length;i++){
+    if(data[i].isbn > newId)
+       newId = data[i].isbn;
+    
    str += "<li>"+data[i].title+"<button onClick='deleteRow("+data[i].isbn+")'>-</button></li>"
    }
    str+="</li>"
@@ -96,7 +101,7 @@ $("#save").on("click",function(){
 var tx = db.transaction("itemlist", "readwrite");
 var store = tx.objectStore("itemlist");
 
-store.put({title: $("#key").val(), isbn: data.length+1});
+store.put({title: $("#key").val(), isbn: newId+1});
 
 
 tx.oncomplete = function() {
