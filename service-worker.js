@@ -1,4 +1,4 @@
-var cacheName = 'samplePwaCache-1';
+var cacheName = 'samplePwaCache-2';
 var filesToCache = [
    '/offlinedb/',
   '/offlinedb/index.html',
