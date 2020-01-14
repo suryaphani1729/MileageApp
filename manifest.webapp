@@ -1,7 +1,7 @@
 {
   "name": "IndexedDB",
   "short_name": "IndexedDB"
-  "theme_color": "#000000",
+  "theme_color" : "#006064",
   "background_color": "#e0e0e0",
   "start_url": "/offlinedb/index.html",
   "display": "standalone",
