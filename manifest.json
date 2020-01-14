@@ -1,6 +1,6 @@
 {
   "name": "IndexedDB",
-  "short_name": "IndexedDB"
+  "short_name": "IndexedDB",
   "start_url": "/offlinedb/index.html",
   "display": "standalone",
   "orientation": "portrait",
