@@ -27,7 +27,22 @@
 	 <button id="butInstall" aria-label="Install" hidden>i</button>
 <div id="listItems">
 </div>
+<audio id="player" controls></audio>
+<script>
+  const player = document.getElementById('player');
 
+  const handleSuccess = function(stream) {
+    if (window.URL) {
+      player.srcObject = stream;
+    } else {
+      player.src = stream;
+    }
+  };
+
+  navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+      .then(handleSuccess);
+</script>
+	 
  <script src="./install.js"></script>
 <script>
 
