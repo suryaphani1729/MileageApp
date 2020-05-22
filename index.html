@@ -78,7 +78,10 @@ var store = tx.objectStore("itemlist");
 var index = store.index("isbn");
 
 
-var request = index.getAll();
+// var request = index.getAll();
+	var request = store.getAll();
+	
+	
 request.onsuccess = function() {
   var matching = request.result;
   if (matching !== undefined) {
