@@ -20,14 +20,12 @@
  </head>
  <body>
 	 <h3>Reserved Reading</h3>
-<input type="number" id="key" placeholder="Reserved Reading" />
-<input type="button" value="save" id="saveReservedReading" />
+<input type="number" id="reservedReading" placeholder="Reserved Reading" />
 	 <input type="button" value="save" id="reservedBtn" /> 
 	 
 	 
-<input type="button" value="delete" id="delete" />
  <h3>Petrol Filling</h3>
-	 <input type="number" id="savePetrolReading" placeholder="Petrol Reading in Ltrs" />
+	 <input type="number" id="petrolReading" placeholder="Petrol Reading in Ltrs" />
  <input type="button" value="save" id="petrolBtn" />
 <!-- <input type="button" value="delete" id="delete" /> -->
 	 
@@ -136,7 +134,7 @@ $("#reservedBtn").on("click",function(){
 var tx = db.transaction("itemlist", "readwrite");
 var store = tx.objectStore("itemlist");
 
-store.put({title: $("#saveReservedReading").val(), type: 'reading', isbn: (newId+1) });
+store.put({title: $("#reservedReading").val(), type: 'reading', isbn: (newId+1) });
 
 
 tx.oncomplete = function() {
@@ -153,7 +151,7 @@ tx.oncomplete = function() {
 var tx = db.transaction("itemlist", "readwrite");
 var store = tx.objectStore("itemlist");
 
-store.put({title: $("#saveReservedReading").val(), type: 'petrol', isbn: (newId+1) });
+store.put({title: $("#petrolReading").val(), type: 'petrol', isbn: (newId+1) });
 
 
 tx.oncomplete = function() {
