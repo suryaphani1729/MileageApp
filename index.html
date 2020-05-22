@@ -60,9 +60,9 @@ request.onupgradeneeded = function() {
   var titleIndex = store.createIndex("by_title", "title", {unique: true});
 
   // Populate with initial data.
-  store.put({title: "Quarry Memories",isbn:1});
-  store.put({title: "Water Buffaloes",isbn:2});
-  store.put({title: "Bedrock Nights",isbn:3});
+ // store.put({title: "Quarry Memories",isbn:1});
+ // store.put({title: "Water Buffaloes",isbn:2});
+//  store.put({title: "Bedrock Nights",isbn:3});
 };
 
 var db;
@@ -143,7 +143,7 @@ store.put({title: $("#reservedReading").val(), type: 'reading', isbn: (newId+1) 
 tx.oncomplete = function() {
     console.log(db);
     getData();
-    $("#key").val("");
+    $("#reservedReading").val("");
 };
 
 });
@@ -160,7 +160,7 @@ store.put({title: $("#petrolReading").val(), type: 'petrol', isbn: (newId+1) });
 tx.oncomplete = function() {
     console.log(db);
     getData();
-    $("#key").val("");
+    $("#petrolReading").val("");
 };
 
 });
