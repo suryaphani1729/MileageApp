@@ -75,7 +75,7 @@ function getData(){
 
 var tx = db.transaction("itemlist", "readwrite");
 var store = tx.objectStore("itemlist");
-var index = store.index("by_title");
+var index = store.index("isbn");
 
 
 var request = index.getAll();
