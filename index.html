@@ -19,31 +19,26 @@
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" ></script>
  </head>
  <body>
-
-<input type="text" id="key" />
-<input type="button" value="save" id="save" />
+	 <h3>Reserved Reading</h3>
+<input type="number" id="key" placeholder="Reserved Reading" />
+<input type="button" value="save" id="saveReservedReading" />
+	 <input type="button" value="save" id="reservedBtn" /> 
+	 
+	 
 <input type="button" value="delete" id="delete" />
-
+ <h3>Petrol Filling</h3>
+	 <input type="number" id="savePetrolReading" placeholder="Petrol Reading in Ltrs" />
+ <input type="button" value="save" id="petrolBtn" />
+<!-- <input type="button" value="delete" id="delete" /> -->
+	 
+	 
+	 
+	 
 	 <button id="butInstall" aria-label="Install" hidden>i</button>
 <div id="listItems">
 </div>
-<audio id="player" controls></audio>
-<script>
-  const player = document.getElementById('player');
 
-  const handleSuccess = function(stream) {
-    if (window.URL) {
-      player.srcObject = stream;
-    } else {
-      player.src = stream;
-    }
-  };
-
-  navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-      .then(handleSuccess);
-</script>
-	 
- <script src="./install.js"></script>
+<script src="./install.js"></script>
 <script>
 
  if ('serviceWorker' in navigator) {
@@ -136,12 +131,29 @@ function renderHTML(){
 
 var btn = document.getElementById("save");
 var data;
-$("#save").on("click",function(){
+$("#reservedBtn").on("click",function(){
  var db = request.result;
 var tx = db.transaction("itemlist", "readwrite");
 var store = tx.objectStore("itemlist");
 
-store.put({title: $("#key").val(), isbn: (newId+1) });
+store.put({title: $("#saveReservedReading").val(), type: 'reading', isbn: (newId+1) });
+
+
+tx.oncomplete = function() {
+    console.log(db);
+    getData();
+    $("#key").val("");
+};
+
+});
+	
+	
+	$("#petrolBtn").on("click",function(){
+ var db = request.result;
+var tx = db.transaction("itemlist", "readwrite");
+var store = tx.objectStore("itemlist");
+
+store.put({title: $("#saveReservedReading").val(), type: 'petrol', isbn: (newId+1) });
 
 
 tx.oncomplete = function() {
