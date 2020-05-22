@@ -1,6 +1,6 @@
 {
-  "name": "IndexedDB",
-  "short_name": "IndexedDB",
+  "name": "MileageMeter",
+  "short_name": "MileageMeter",
   "icons": [{
     "src": "/offlinedb/icons/db-128.png",
       "sizes": "128x128",
