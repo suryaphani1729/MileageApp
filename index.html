@@ -1,172 +1,215 @@
 <html>
-<head>
- <title>IndexedDb</title>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="manifest" href="./manifest.json">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Sample DB">
-   <link rel="apple-touch-icon" href="./icons/db-152.png">
-  <!--CODELAB: Add description here -->
-  <meta name="description" content="A sample db app">
-  <!-- CODELAB: Add meta theme-color -->
-  <meta name="theme-color" content="#006064" />
-	
- <meta name="viewport" content="width=device-width, initial-scale=1">
- 
- 
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" ></script>
- </head>
- <body>
-	 <h3>Reserved Reading</h3>
-<input type="number" id="reservedReading" placeholder="Reserved Reading" />
-	 <input type="button" value="save" id="reservedBtn" /> 
-	 
-	 
- <h3>Petrol Filling</h3>
-	 <input type="number" id="petrolReading" placeholder="Petrol Reading in Ltrs" />
- <input type="button" value="save" id="petrolBtn" />
-<!-- <input type="button" value="delete" id="delete" /> -->
-	 
-	 
-	 
-	 
-	 <button id="butInstall" aria-label="Install" hidden>i</button>
-<div id="listItems">
-</div>
+  <head>
+    <title>Mileage Meter</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="manifest" href="./manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="Sample DB" />
+    <link rel="apple-touch-icon" href="./icons/db-152.png" />
+    <!--CODELAB: Add description here -->
+    <meta name="description" content="A sample db app" />
+    <!-- CODELAB: Add meta theme-color -->
+    <meta name="theme-color" content="#006064" />
 
-<script src="./install.js"></script>
-<script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
- if ('serviceWorker' in navigator) {
-    navigator.serviceWorker
-             .register('./service-worker.js')
-             .then(function() { console.log('Service Worker Registered');
-                               
-                              });
-  }
- 
- 
- 
- 
- 
-var request = indexedDB.open("library");
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+      .recentMileage {
+        background: #d8d5d5;
+        padding: 1em;
+        display: initial;
+        border: 1px solid gray;
+        border-radius: 1em;
+      }
+      .container {
+        margin: 5px;
+        padding: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div id="recentMileage" class="recentMileage"></div>
+      <br /><br />
+      <div id="recentMileageMsg"></div>
+      <h3>Reserved Reading</h3>
+      <input
+        type="number"
+        id="reservedReading"
+        placeholder="Reserved Reading"
+      />
+      <input type="button" value="save" id="reservedBtn" />
 
-request.onupgradeneeded = function() {
-  // The database did not previously exist, so create object stores and indexes.
-  var db = request.result;
-  var store = db.createObjectStore("itemlist", {keyPath: "isbn"});
-  var titleIndex = store.createIndex("by_title", "title", {unique: true});
+      <h3>Petrol Filling</h3>
+      <input
+        type="number"
+        id="petrolReading"
+        placeholder="Petrol Reading in Ltrs"
+      />
+      <input type="button" value="save" id="petrolBtn" />
+      <!-- <input type="button" value="delete" id="delete" /> -->
 
-  // Populate with initial data.
- // store.put({title: "Quarry Memories",isbn:1});
- // store.put({title: "Water Buffaloes",isbn:2});
-//  store.put({title: "Bedrock Nights",isbn:3});
-};
+      <button id="butInstall" aria-label="Install" hidden>i</button>
+      <div id="listItems"></div>
+    </div>
+    <script src="./install.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("./service-worker.js")
+          .then(function () {
+            console.log("Service Worker Registered");
+          });
+      }
 
-var db;
-request.onsuccess = function() {
-   db = request.result;
-   getData();
-}
-function getData(){
- 
+      var request = indexedDB.open("library");
 
-var tx = db.transaction("itemlist", "readwrite");
-var store = tx.objectStore("itemlist");
-// var index = store.index("isbn");
+      request.onupgradeneeded = function () {
+        // The database did not previously exist, so create object stores and indexes.
+        var db = request.result;
+        var store = db.createObjectStore("itemlist", { keyPath: "isbn" });
+        var titleIndex = store.createIndex("by_title", "title", {
+          unique: true,
+        });
 
+        // Populate with initial data.
+        // store.put({title: "Quarry Memories",isbn:1});
+        // store.put({title: "Water Buffaloes",isbn:2});
+        //  store.put({title: "Bedrock Nights",isbn:3});
+      };
 
-// var request = index.getAll();
-	var request = store.getAll();
-	
-	
-request.onsuccess = function() {
-  var matching = request.result;
-  if (matching !== undefined) {
-    // A match was found.
-   data = matching;
-   renderHTML();
-  } else {
-    // No match was found.
-    console.log(null);
-  }
-};
+      var db;
+      request.onsuccess = function () {
+        db = request.result;
+        getData();
+      };
+      function getData() {
+        var tx = db.transaction("itemlist", "readwrite");
+        var store = tx.objectStore("itemlist");
+        // var index = store.index("isbn");
 
-}
+        // var request = index.getAll();
+        var request = store.getAll();
 
-function deleteRow(id){
-  
-  console.log(id);
-var tx = db.transaction("itemlist", "readwrite");
-var store = tx.objectStore("itemlist");
+        request.onsuccess = function () {
+          var matching = request.result;
+          if (matching !== undefined) {
+            // A match was found.
+            data = matching;
+            renderHTML();
+          } else {
+            // No match was found.
+            console.log(null);
+          }
+        };
+      }
 
+      function deleteRow(id) {
+        console.log(id);
+        var tx = db.transaction("itemlist", "readwrite");
+        var store = tx.objectStore("itemlist");
 
-var request = store.delete(id);
-request.onsuccess = function(ev) {
-console.log(ev);
- getData();
-};
-  
+        var request = store.delete(id);
+        request.onsuccess = function (ev) {
+          console.log(ev);
+          getData();
+        };
+      }
+      $("#delete").on("click", function () {
+        //deleteRow();
+      });
+      var newId = 0;
+      function renderHTML() {
+        var str = "<table><tbody>";
+        var last_reading = 0;
+        var last_petrol = 0;
+        var last_mileage = 0;
+        let mileage = 0;
+        for (var i = 0; i < data.length; i++) {
+          mileage = 0;
+          if (last_reading === 0 && data[i].type === "reading") {
+            last_reading = parseInt(data[i].title);
+            mileage = 0;
+          } else if (last_petrol === 0 && data[i].type === "petrol") {
+            last_petrol = parseFloat(data[i].title).toFixed(2);
+            mileage = 0;
+          } else if (data[i].type === "reading") {
+            let current_reading = parseInt(data[i].title);
+            mileage = ((current_reading - last_reading) / last_petrol).toFixed(
+              2
+            );
+            last_reading = current_reading;
+          } else {
+            last_petrol = parseFloat(data[i].title).toFixed(2);
+          }
 
-}
-$("#delete").on("click",function(){
+          if (data[i].isbn > newId) newId = data[i].isbn;
+          if (mileage != 0) {
+            last_mileage = mileage;
+          }
+          str +=
+            "<tr><td>" +
+            data[i].title +
+            "</td><td>" +
+            mileage +
+            "</td><td><button onClick='deleteRow(" +
+            data[i].isbn +
+            ")'>-</button></td></tr>";
+        }
+        str += "</tbody></table>";
+        $("#listItems").html(str);
+        $("#recentMileage").html(last_mileage);
+        const bgColor = colorSelector(last_mileage);
+        $(".recentMileage").css({ background: bgColor.color });
+        $("#recentMileageMsg").html(bgColor.msg);
+      }
+      function colorSelector(reading) {
+        return reading < 40
+          ? { color: "red", msg: "service required" }
+          : reading < 60
+          ? { color: "orange", msg: "caution to service" }
+          : { color: "green", msg: "" };
+      }
+      var btn = document.getElementById("save");
+      var data;
+      $("#reservedBtn").on("click", function () {
+        var db = request.result;
+        var tx = db.transaction("itemlist", "readwrite");
+        var store = tx.objectStore("itemlist");
 
-//deleteRow();
+        store.put({
+          title: $("#reservedReading").val(),
+          type: "reading",
+          isbn: newId + 1,
+        });
 
-});
- var newId = 0;
-function renderHTML(){
- 
-   var str="<ul>";
-   for(var i=0;i<data.length;i++){
-    if(data[i].isbn > newId)
-       newId = data[i].isbn;
-    
-   str += "<li>"+data[i].title+"<button onClick='deleteRow("+data[i].isbn+")'>-</button></li>"
-   }
-   str+="</li>"
-   $("#listItems").html(str);
-}
+        tx.oncomplete = function () {
+          console.log(db);
+          getData();
+          $("#reservedReading").val("");
+        };
+      });
 
-var btn = document.getElementById("save");
-var data;
-$("#reservedBtn").on("click",function(){
- var db = request.result;
-var tx = db.transaction("itemlist", "readwrite");
-var store = tx.objectStore("itemlist");
+      $("#petrolBtn").on("click", function () {
+        var db = request.result;
+        var tx = db.transaction("itemlist", "readwrite");
+        var store = tx.objectStore("itemlist");
 
-store.put({title: $("#reservedReading").val(), type: 'reading', isbn: (newId+1) });
+        store.put({
+          title: $("#petrolReading").val(),
+          type: "petrol",
+          isbn: newId + 1,
+        });
 
-
-tx.oncomplete = function() {
-    console.log(db);
-    getData();
-    $("#reservedReading").val("");
-};
-
-});
-	
-	
-	$("#petrolBtn").on("click",function(){
- var db = request.result;
-var tx = db.transaction("itemlist", "readwrite");
-var store = tx.objectStore("itemlist");
-
-store.put({title: $("#petrolReading").val(), type: 'petrol', isbn: (newId+1) });
-
-
-tx.oncomplete = function() {
-    console.log(db);
-    getData();
-    $("#petrolReading").val("");
-};
-
-});
-
-
-
-</script>
-</body>
+        tx.oncomplete = function () {
+          console.log(db);
+          getData();
+          $("#petrolReading").val("");
+        };
+      });
+    </script>
+  </body>
 </html>
