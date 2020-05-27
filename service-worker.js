@@ -1,7 +1,7 @@
 var cacheName = 'samplePwaCache-2';
 var filesToCache = [
-   '/offlinedb/',
-  '/offlinedb/index.html',
+   '/MileageApp/',
+  '/MileageApp/index.html',
   'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'
 ];
 
